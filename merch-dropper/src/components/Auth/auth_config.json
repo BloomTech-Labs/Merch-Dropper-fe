@@ -1,4 +1,5 @@
 {
-    "domain" : "merch-dropper.auth0.com",
-    "clientId" : "Pb3Cp5ptYghmNVDjusjPmsHPRkJq6RAP"
+  "domain": "merch-dropper.auth0.com",
+  "clientId": "Pb3Cp5ptYghmNVDjusjPmsHPRkJq6RAP",
+  "audience": "https://merchdropper-production.herokuapp.com/"
 }

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useAuth0 } from "./Auth/Auth";
+
 import "../App.css";
 import {
   Button,
@@ -14,6 +16,7 @@ import {
   Container,
   Media
 } from "reactstrap";
+import ProductDisplay from "./ProductDisplay";
 
 const Home = ({ history }) => {
   return (
@@ -26,35 +29,62 @@ const Home = ({ history }) => {
               <Col className="column" sm={{ size: "auto" }}>
                 <h1
                   className="display-3 customh1"
-                  style={{ textAlign: "center", color: "white", fontWeight: "bold" }}
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontWeight: "bold"
+                  }}
                 >
                   CUSTOM
                 </h1>
                 <h2
                   className="display-4 tshirth1"
-                  style={{ textAlign: "center", color: "white", fontWeight: "bold" }}
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontWeight: "bold"
+                  }}
                 >
                   T-SHIRTS
                 </h2>
                 <h1
                   className="andMore"
-                  style={{ textAlign: "center", color: "white", fontWeight: "bold" }}
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontWeight: "bold"
+                  }}
                 >
                   AND MORE
                 </h1>
                 <div className="line2" />
                 <p
                   className="p2"
-                  style={{ textAlign: "center", color: "white", fontWeight: "bold" }}
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontWeight: "bold"
+                  }}
                 >
                   Need merch? We've got your back.
                 </p>
-                <p className="p2" style={{ textAlign: "center", color: "white", margin: "5% 0" }}>
-                  Full service merchandising solutions from Merch Dropper and Scalable Press, no
-                  matter the size.
+                <p
+                  className="p2"
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    margin: "5% 0"
+                  }}
+                >
+                  Full service merchandising solutions from Merch Dropper and
+                  Scalable Press, no matter the size.
                 </p>
                 <p style={{ textAlign: "center" }}>
-                  <Button color="primary" className="letsGo" href="/designshirt">
+                  <Button
+                    color="primary"
+                    className="letsGo"
+                    href="/designshirt"
+                  >
                     Let's Go!
                   </Button>
                   <br />
@@ -153,7 +183,9 @@ const Home = ({ history }) => {
               />
               <CardBody>
                 <CardTitle className="cardTitle">Kitten Mug</CardTitle>
-                <CardText className="cardText">Like cats? We make merch your way.</CardText>
+                <CardText className="cardText">
+                  Like cats? We make merch your way.
+                </CardText>
               </CardBody>
             </Card>
 
@@ -169,7 +201,9 @@ const Home = ({ history }) => {
                 <CardTitle className="cardTitle" style={{ color: "#026FC2" }}>
                   iPhone 11 Case
                 </CardTitle>
-                <CardText className="cardText">Like cats? We make merch your way.</CardText>
+                <CardText className="cardText">
+                  Like cats? We make merch your way.
+                </CardText>
               </CardBody>
             </Card>
 
@@ -185,7 +219,9 @@ const Home = ({ history }) => {
                 <CardTitle className="cardTitle" style={{ color: "#026FC2" }}>
                   Adorable Jumper
                 </CardTitle>
-                <CardText className="cardText">Like cats? We make merch your way.</CardText>
+                <CardText className="cardText">
+                  Like cats? We make merch your way.
+                </CardText>
               </CardBody>
             </Card>
 
@@ -201,7 +237,9 @@ const Home = ({ history }) => {
                 <CardTitle className="cardTitle" style={{ color: "#026FC2" }}>
                   Fitted Tee
                 </CardTitle>
-                <CardText className="cardText">Like cats? We make merch your way.</CardText>
+                <CardText className="cardText">
+                  Like cats? We make merch your way.
+                </CardText>
               </CardBody>
             </Card>
           </Row>

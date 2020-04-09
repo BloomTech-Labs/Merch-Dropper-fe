@@ -1,13 +1,22 @@
 import React, { useState, Fragment } from "react";
+
+// styles
 import "../../App.css";
 import styled from "styled-components";
+
+// components
 import MockupDisplay from "./MockupDisplay";
 import DesignPositionPanel from "./DesignPositionPanel";
 import DesignInputPanel from "./DesignInputPanel";
+
+// function imported that literally returns NULL??
 import HandleScalableMockup from "./HandleScalableMockup";
+// initial design and garment state
 import initialShirtState from "./initialShirtState";
+// another function
 import AddProduct from "./AddProduct";
 
+// This code represents the shirt designer tool/page that gets imported into App.js
 const DesignShirt = () => {
   const [design, setDesign] = useState(initialShirtState.designInfo);
   const [garment, setGarment] = useState(initialShirtState.garment);

@@ -1,22 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 
+// this component maps the array of colors (at the bottom of this file) to the SwatchBox styled div
 const Swatch = ({ garment, setGarment }) => {
   return (
     <SwatchBox>
       {colors.map((color, index) => (
         <a href="#section" key={index}>
+          {/* the properties of SwatchSquare are set to color[0] which is the name of each color */}
           <SwatchSquare
             name="color"
-            value={color[0]}
+            value={color[0]} // color is an array with 2 values, color[0] is the name of the color, color[1] is the hexcode
             id={color[0]}
             key={color[0]}
             title={color[0]}
             className="swatchSquare"
             onClick={() =>
+              // this onClick spreads in the existing garment state object and assigns the relevant color information (name of color and hex code)
               setGarment({ ...garment, color: color[0], colorHex: color[1] })
             }
-            style={{ backgroundColor: color[1] }}></SwatchSquare>
+            // color[1] is the hex code of the color
+            style={{ backgroundColor: color[1] }}
+          ></SwatchSquare>
         </a>
       ))}
     </SwatchBox>

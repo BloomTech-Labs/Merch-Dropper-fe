@@ -4,7 +4,8 @@ import TemplateShirt from "./TemplateShirt";
 import HorizontalAlign from "./HorizontalAlign";
 import BottomSlider from "./BottomSlider";
 
-const DesignPositionPanel = ({garment, setGarment}) => {
+// this component represents the shirt preview part of the DesignShirt component with the Vertical Offset (TopSlider), Horizontal Alignment (HorizontalAlign), and Design Width (BottomSlider) options
+const DesignPositionPanel = ({ garment, setGarment }) => {
   return (
     <div>
       <TopSlider garment={garment} setGarment={setGarment} />

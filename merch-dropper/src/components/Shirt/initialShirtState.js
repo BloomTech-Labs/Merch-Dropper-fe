@@ -1,8 +1,11 @@
 const initialShirtState = {
+  // garment info is for Scalable Press
   garment: {
     color: "Team Purple",
     colorHex: "#824393",
+    // dtg represents direct-to-garment
     printStyle: "dtg",
+    // artwork links to
     artwork: "",
     designWidth: "6",
     horizontalPlacement: ".5",
@@ -10,6 +13,7 @@ const initialShirtState = {
     offSetFromTop: "2",
     mockUrl: ""
   },
+  // cloudinaryInfo is more or less empty because there is a stock image
   cloudinaryInfo: {
     publicId: "",
     version: 0,

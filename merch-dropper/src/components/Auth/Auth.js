@@ -1,29 +1,35 @@
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import { useHistory } from "react-router-dom";
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
-    window.history.replaceState({}, document.title, window.location.pathname);
+  window.history.replaceState({}, document.title, window.location.pathname);
 
 export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
+console.log("This is useAuth0 in Auth.js: ", useAuth0);
+
 export const Auth0Provider = ({
-                                children,
-                                onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
-                                ...initOptions
-                              }) => {
+  children,
+  onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
+  ...initOptions
+}) => {
   const [isAuthenticated, setIsAuthenticated] = useState();
   const [user, setUser] = useState();
   const [auth0Client, setAuth0] = useState();
   const [loading, setLoading] = useState(true);
+
   const [popupOpen, setPopupOpen] = useState(false);
 
   useEffect(() => {
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions);
-      setAuth0(auth0FromHook);
 
-      if (window.location.search.includes("code=") &&
-          window.location.search.includes("state=")) {
+      setAuth0(auth0FromHook);
+      if (
+        window.location.search.includes("code=") &&
+        window.location.search.includes("state=")
+      ) {
         const { appState } = await auth0FromHook.handleRedirectCallback();
         onRedirectCallback(appState);
       }
@@ -34,18 +40,27 @@ export const Auth0Provider = ({
 
       if (isAuthenticated) {
         const user = await auth0FromHook.getUser();
+        const token = await auth0FromHook.getTokenSilently();
+        const id = user.sub.split("|");
+
+        console.log(user);
+
         setUser(user);
         localStorage.setItem("profile", JSON.stringify(user));
+        localStorage.setItem("id", id[1]);
+        localStorage.setItem("token", token);
       }
 
       setLoading(false);
     };
+
     initAuth0();
     // eslint-disable-next-line
   }, []);
 
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true);
+
     try {
       await auth0Client.loginWithPopup(params);
     } catch (error) {
@@ -66,23 +81,30 @@ export const Auth0Provider = ({
     setIsAuthenticated(true);
     setUser(user);
   };
+
   return (
-      <Auth0Context.Provider
-          value={{
-            isAuthenticated,
-            user,
-            loading,
-            popupOpen,
-            loginWithPopup,
-            handleRedirectCallback,
-            getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
-            loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
-            getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
-            getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-            logout: (...p) => auth0Client.logout(...p)
-          }}
-      >
-        {children}
-      </Auth0Context.Provider>
+    <Auth0Context.Provider
+      value={{
+        isAuthenticated,
+        user,
+        loading,
+        popupOpen,
+        loginWithPopup,
+        handleRedirectCallback,
+        auth0Client,
+        getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
+        loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
+        getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
+        getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
+        logout: (...p) => {
+          localStorage.removeItem("id");
+          localStorage.removeItem("token");
+          localStorage.removeItem("profile");
+          auth0Client.logout(...p);
+        },
+      }}
+    >
+      {children}
+    </Auth0Context.Provider>
   );
 };
