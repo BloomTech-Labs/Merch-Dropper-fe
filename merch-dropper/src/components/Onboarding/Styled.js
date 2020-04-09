@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 
+export const MainContainer = styled.div`
+
+    background: #E5E5E5;
+    height: 1024px;
+    display:flex;
+    justify-content:space-around;
+
+`;
+
 export const CTAContainer = styled.div`
     
     width: 550px;

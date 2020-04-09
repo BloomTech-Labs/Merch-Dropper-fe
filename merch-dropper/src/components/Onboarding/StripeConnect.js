@@ -3,8 +3,10 @@ import { Stepper, Step, StepLabel } from '@material-ui/core';
 import {FormContainer, ExitButton, StripeTitle, StepContainer, StripeButton, StripeSkipButton} from './Styled'
 import history from '../../utils/history';
 
-function getSteps() {
+const getSteps = () => {
+
     return ['Create Account', 'Connect Stripe', 'Create Store'];
+
 }
 
 const ConnectStripe = e => {
@@ -14,46 +16,36 @@ const ConnectStripe = e => {
 
 }
 
-
 const SkipSetup = e => {
 
     e.preventDefault();
     history.push('/createstore');
 }
 
-
-
 const StripeConnect = () => {
 
     let queryString = window.location.search;
-    let stripeConnected = false;
+    const [stripeConnected,setStripeConnected] = useState(false);
     let stripeError = false;
     let userCode = "";
     const [activeStep, setActiveStep] = useState(1);
     const steps = getSteps();
 
-    if(queryString.includes("error")){
-        
-        console.log(queryString)
-        stripeError = true;
-        console.log("Contains Error ", stripeConnected);
-    }
+    if(queryString.includes("error")){ stripeError = true; }
 
     if(queryString.includes("code=")){
        
-        userCode = queryString.substring( queryString.indexOf('code=') + 5 );
-        console.log(userCode);
-
         const stripe = require('stripe')('sk_test_LuUPedkQ24QvxJfvBVKdSdmT00ZkaFXUHk');
+        userCode = queryString.substring( queryString.indexOf('code=') + 5 );
         
-
-           stripe.oauth.token({
-                grant_type: 'authorization_code',
-                code: userCode,
-                }).then(res => console.log(res));
+        stripe.oauth.token({
+            grant_type: 'authorization_code',
+            code: userCode,
+            }).then(res => {/*returns an object withe the users stripe info. Still need to create an endpoint */
+                            setStripeConnected(true);
+            });
 
     }
-   
 
     return (
         <FormContainer>
@@ -88,8 +80,6 @@ const StripeConnect = () => {
         </FormContainer>
 
     );
-
-
 }
 
 export default StripeConnect;
