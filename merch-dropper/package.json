@@ -29,6 +29,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
+    "stripe": "^8.39.1",
     "styled-components": "^5.0.0"
   },
   "scripts": {
