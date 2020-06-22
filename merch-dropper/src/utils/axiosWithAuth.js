@@ -13,12 +13,12 @@ export const axiosWithAuth = () => {
   if (process.env.REACT_APP_BASE_URL === "development") {
     url = "http://localhost:5032";
   } else {
-    url = "https://merch-dropper.herokuapp.com";
+    url = "https://merchdropper-production.herokuapp.com";
   }
 
   return axios.create({
     baseURL: url,
-    // 'https://merch-dropper.herokuapp.com',
+    // 'https://merchdropper-production.herokuapp.com',
     headers: {
       Authorization: token,
       "Content-Type": "application/json",

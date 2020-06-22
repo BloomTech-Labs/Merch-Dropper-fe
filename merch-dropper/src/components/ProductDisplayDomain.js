@@ -10,22 +10,22 @@ import { axiosWithEnv } from "../utils/axiosWithEnv";
 
 const ProductDisplayDomain = ({ products, addToCart, match, location }) => {
   const [shirts, setShirts] = useState([]);
-  const [connected, setConnected] = useState(false)
+  const [connected, setConnected] = useState(false);
   let storeID = 0;
   const { domain_name } = useParams();
   localStorage.setItem("domain_name", domain_name);
-  
+
   useEffect(() => {
     axiosWithEnv()
       .get(`/api/stores/domain/${domain_name}`)
       // axios
       // .get(
-      //   `https://merch-dropper.herokuapp.com/api/stores/domain/${domain_name}`
+      //   `https://merchdropper-production.herokuapp.com/api/stores/domain/${domain_name}`
       // )
       .then((res) => {
         storeID = res.data.id;
         localStorage.setItem("storeID", storeID);
-        setConnected(res.data.active)
+        setConnected(res.data.active);
       })
       .catch((err) => {
         console.log(err);
@@ -35,7 +35,7 @@ const ProductDisplayDomain = ({ products, addToCart, match, location }) => {
           .get(`/api/products/store/${storeID}`)
           // axios
           // .get(
-          //   `https://merch-dropper.herokuapp.com/api/products/store/${storeID}`
+          //   `https://merchdropper-production.herokuapp.com/api/products/store/${storeID}`
           // )
           .then((res) => {
             setShirts(res.data);
@@ -49,23 +49,22 @@ const ProductDisplayDomain = ({ products, addToCart, match, location }) => {
   return (
     <>
       {shirts.length !== 0 && connected ? (
-        <Container style={{display: "flex"}}>
+        <Container style={{ display: "flex" }}>
           <Row>
             {/* <Col > */}
-              {shirts.map((product, id) => (
-                <ProductCard
-                  key={id}
-                  url={product.thumbnailURL}
-                  name={product.productName}
-                  design={product.design}
-                  price={product.price}
-                  product={product}
-                  addToCart={addToCart}
-                />
-              ))}
+            {shirts.map((product, id) => (
+              <ProductCard
+                key={id}
+                url={product.thumbnailURL}
+                name={product.productName}
+                design={product.design}
+                price={product.price}
+                product={product}
+                addToCart={addToCart}
+              />
+            ))}
             {/* </Col> */}
-            </Row>
-          
+          </Row>
         </Container>
       ) : (
         <div style={{ height: "65vh", textAlign: "center" }}>

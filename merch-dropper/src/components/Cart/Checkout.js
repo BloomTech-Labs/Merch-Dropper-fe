@@ -1,16 +1,14 @@
-
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector } from "react-redux"
-import axios from 'axios';
-import { axiosWithEnv } from '../../utils/axiosWithEnv'
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { axiosWithEnv } from "../../utils/axiosWithEnv";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import styled from "styled-components";
 import StripeCheckoutButton from "../StripeButton";
-import QuoteError from "../Modals/QuoteError"
-import {initialQuoteState} from "../../store/reducers/QuoteReducer";
+import QuoteError from "../Modals/QuoteError";
+import { initialQuoteState } from "../../store/reducers/QuoteReducer";
 // import {addAddress, getQuote, setQuote} from "../../store/actions"
-
 
 import {
   selectCartItems,
@@ -21,9 +19,9 @@ import {
   removeFromCart,
   clearItemFromCart,
   setQuote,
-  getQuote
+  getQuote,
 } from "../../store/actions/index";
-import Spinner from '../Component-Styles/Spinner';
+import Spinner from "../Component-Styles/Spinner";
 
 const CheckoutPage = ({
   cart,
@@ -33,32 +31,30 @@ const CheckoutPage = ({
   removeItem,
   clearItem,
 }) => {
-const [checkError, setCheckError] = useState(false)
-const [ready, setReady] = useState(false)
- const quote = useSelector(state => state.QuoteReducer.quote)
+  const [checkError, setCheckError] = useState(false);
+  const [ready, setReady] = useState(false);
+  const quote = useSelector((state) => state.QuoteReducer.quote);
   const dispatch = useDispatch();
   const { domain_name } = match.params;
-  const sendQuote = useSelector(state => state.QuoteReducer.sendQuote)
-  const FunctionTotal=(a,b,c) => {
-      return a+b+c
-    }
-  const orderToken = quote.quote.orderToken
-    
-  useEffect(() => {  
-       axiosWithEnv()
-        .get(
-          `/api/stores/domain/${domain_name}`
-        )
-        // axios
-        // .get(
-        //   `https://merch-dropper.herokuapp.com/api/stores/domain/${domain_name}`
-        // )
+  const sendQuote = useSelector((state) => state.QuoteReducer.sendQuote);
+  const FunctionTotal = (a, b, c) => {
+    return a + b + c;
+  };
+  const orderToken = quote.quote.orderToken;
+
+  useEffect(() => {
+    axiosWithEnv()
+      .get(`/api/stores/domain/${domain_name}`)
+      // axios
+      // .get(
+      //   `https://merchdropper-production.herokuapp.com/api/stores/domain/${domain_name}`
+      // )
       .then((res) => {
-        dispatch(getQuote(sendQuote))
-        setTimeout(()=>{
-          setCheckError(true) // make the modal wait until the dispatch has been sent
-          setReady(true)
-        }, 2000)
+        dispatch(getQuote(sendQuote));
+        setTimeout(() => {
+          setCheckError(true); // make the modal wait until the dispatch has been sent
+          setReady(true);
+        }, 2000);
         if (Number(res.data.id) !== Number(localStorage.getItem("storeID"))) {
           localStorage.setItem("storeID", Number(res.data.id));
           window.location.reload();
@@ -68,13 +64,11 @@ const [ready, setReady] = useState(false)
         console.log(err);
         // future note to add modal for better errors
       });
-      
-  }, [match.params, domain_name,]);
+  }, [match.params, domain_name]);
 
-  return (
-    quote.quote   ? 
+  return quote.quote ? (
     <CheckoutPageWrapper className="checkout-page">
-       {!orderToken && checkError  ? <QuoteError /> : null}
+      {!orderToken && checkError ? <QuoteError /> : null}
       <CheckoutHeader className="checkout-header">
         <HeaderBlock className="header-block">
           <span>Product</span>
@@ -123,22 +117,39 @@ const [ready, setReady] = useState(false)
             </RemoveButton>
           </CheckoutItemWrapper>
         ))}
-        <SubTotal className="subtotal">
-          <span>SubTotal ${total.toFixed(2)}</span><br/>
-          <span>Tax: ${quote.quote.tax.toFixed(2)}</span><br/>
-          <span>Shipping: {cart.length <= 0 ? "$0" : `${quote.quote.shipping.toFixed(2)}`} </span>
-        </SubTotal>
+      <SubTotal className="subtotal">
+        <span>SubTotal ${total.toFixed(2)}</span>
+        <br />
+        <span>Tax: ${quote.quote.tax.toFixed(2)}</span>
+        <br />
+        <span>
+          Shipping:{" "}
+          {cart.length <= 0 ? "$0" : `${quote.quote.shipping.toFixed(2)}`}{" "}
+        </span>
+      </SubTotal>
       <Total className="total">
-        <span>Total: {cart.length <= 0 ? "$0" :`${FunctionTotal(total, quote.quote.tax, quote.quote.shipping).toFixed(2)}`}</span>
+        <span>
+          Total:{" "}
+          {cart.length <= 0
+            ? "$0"
+            : `${FunctionTotal(
+                total,
+                quote.quote.tax,
+                quote.quote.shipping
+              ).toFixed(2)}`}
+        </span>
       </Total>
-      {ready ? 
-        <StripeCheckoutButton price={FunctionTotal(total, quote.quote.tax, quote.quote.shipping)} domain={domain_name} />
-        :
+      {ready ? (
+        <StripeCheckoutButton
+          price={FunctionTotal(total, quote.quote.tax, quote.quote.shipping)}
+          domain={domain_name}
+        />
+      ) : (
         <Spinner />
-      }
-
+      )}
     </CheckoutPageWrapper>
-    : <div>Redirecting to Checkout</div>
+  ) : (
+    <div>Redirecting to Checkout</div>
   );
 };
 
@@ -186,10 +197,10 @@ const HeaderBlock = styled.div`
 `;
 
 const SubTotal = styled.div`
-margin-top: 30px;
-margin-left: auto;
-font-size: 15px;
-`
+  margin-top: 30px;
+  margin-left: auto;
+  font-size: 15px;
+`;
 
 const Total = styled.div`
   margin-top: 30px;
